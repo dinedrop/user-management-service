@@ -1,14 +1,12 @@
 import mongoose, { Document, Model } from "mongoose";
 
 import { QueryResult } from "@dinedrop/shared";
-import { AccessAndRefreshTokens } from "../token/token.interfaces";
 
 export interface IUser {
   name: string;
   email: string;
-  password: string;
-  role: string;
-  isEmailVerified: boolean;
+  cartId: mongoose.Types.ObjectId;
+  orderId: mongoose.Types.ObjectId;
 }
 
 export interface IUserDoc extends IUser, Document {
@@ -31,8 +29,3 @@ export type UpdateUserBody = Partial<IUser>;
 export type NewRegisteredUser = Omit<IUser, "role" | "isEmailVerified">;
 
 export type NewCreatedUser = Omit<IUser, "isEmailVerified">;
-
-export interface IUserWithTokens {
-  user: IUserDoc;
-  tokens: AccessAndRefreshTokens;
-}

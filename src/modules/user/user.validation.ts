@@ -1,13 +1,13 @@
-import Joi from 'joi';
+import Joi from "joi";
 
-import { objectId, password } from '../validate/custom.validation';
-import { NewCreatedUser } from './user.interfaces';
+import { objectId, password } from "@dinedrop/shared";
+import { NewCreatedUser } from "./user.interfaces";
 
 const createUserBody: Record<keyof NewCreatedUser, any> = {
   email: Joi.string().required().email(),
-  password: Joi.string().required().custom(password),
   name: Joi.string().required(),
-  role: Joi.string().required().valid('user', 'admin'),
+  cartId: Joi.string().custom(objectId),
+  orderId: Joi.string().custom(objectId),
 };
 
 export const createUser = {

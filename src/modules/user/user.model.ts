@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import validator from "validator";
 
-import { roles } from "../../config/roles";
+import { roles } from "@dinedrop/shared";
 import { paginate } from "@dinedrop/shared";
 import { toJSON } from "@dinedrop/shared";
 import { IUserDoc, IUserModel } from "./user.interfaces";
@@ -26,28 +26,13 @@ const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
         }
       },
     },
-    password: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 8,
-      validate(value: string) {
-        if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
-          throw new Error(
-            "Password must contain at least one letter and one number"
-          );
-        }
-      },
-      private: true, // used by the toJSON plugin
+    cartId: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: null,
     },
-    role: {
-      type: String,
-      enum: roles,
-      default: "user",
-    },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
+    orderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: null,
     },
   },
   {
@@ -75,27 +60,6 @@ userSchema.static(
     return !!user;
   }
 );
-
-/**
- * Check if password matches the user's password
- * @param {string} password
- * @returns {Promise<boolean>}
- */
-userSchema.method(
-  "isPasswordMatch",
-  async function (password: string): Promise<boolean> {
-    const user = this;
-    return bcrypt.compare(password, user.password);
-  }
-);
-
-userSchema.pre("save", async function (next) {
-  const user = this;
-  if (user.isModified("password")) {
-    user.password = await bcrypt.hash(user.password, 8);
-  }
-  next();
-});
 
 const User = mongoose.model<IUserDoc, IUserModel>("User", userSchema);
 
