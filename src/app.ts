@@ -4,11 +4,9 @@ import express, { Express } from "express";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import httpStatus from "http-status";
-import passport from "passport";
 import xss from "xss-clean";
 
 import config from "./config/config";
-import { jwtStrategy } from "./modules/auth";
 import { ApiError, errorConverter, errorHandler } from "@dinedrop/shared";
 import { morgan } from "@dinedrop/shared";
 import { authLimiter } from "@dinedrop/shared";
@@ -40,10 +38,6 @@ app.use(ExpressMongoSanitize());
 
 // gzip compression
 app.use(compression());
-
-// jwt authentication
-app.use(passport.initialize());
-passport.use("jwt", jwtStrategy);
 
 // limit repeated failed requests to auth endpoints
 if (config.env === "production") {
