@@ -1,8 +1,5 @@
-import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import validator from "validator";
-
-import { roles } from "@dinedrop/shared";
 import { paginate } from "@dinedrop/shared";
 import { toJSON } from "@dinedrop/shared";
 import { IUserDoc, IUserModel } from "./user.interfaces";
