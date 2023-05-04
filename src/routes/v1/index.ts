@@ -13,7 +13,7 @@ interface IRoute {
 
 const defaultIRoute: IRoute[] = [
   {
-    path: "/users",
+    path: "/",
     route: userRoute,
   },
 ];
@@ -25,16 +25,17 @@ const devIRoute: IRoute[] = [
     route: docsRoute,
   },
 ];
-
-defaultIRoute.forEach((route) => {
-  router.use(route.path, route.route);
-});
-
 /* istanbul ignore next */
 if (config.env === "development") {
   devIRoute.forEach((route) => {
     router.use(route.path, route.route);
   });
 }
+
+defaultIRoute.forEach((route) => {
+  router.use(route.path, route.route);
+});
+
+
 
 export default router;

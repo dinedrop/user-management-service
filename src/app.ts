@@ -9,7 +9,6 @@ import xss from "xss-clean";
 import config from "./config/config";
 import { ApiError, errorConverter, errorHandler } from "@dinedrop/shared";
 import { morgan } from "@dinedrop/shared";
-import { authLimiter } from "@dinedrop/shared";
 import routes from "./routes/v1";
 
 const app: Express = express();
@@ -39,13 +38,8 @@ app.use(ExpressMongoSanitize());
 // gzip compression
 app.use(compression());
 
-// limit repeated failed requests to auth endpoints
-if (config.env === "production") {
-  app.use("/v1/auth", authLimiter);
-}
-
 // v1 api routes
-app.use("/v1", routes);
+app.use("/", routes);
 
 // send back a 404 error for any unknown api request
 app.use((_req, _res, next) => {
