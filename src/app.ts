@@ -10,7 +10,7 @@ import config from "./config/config";
 import { ApiError, errorConverter, errorHandler } from "@dinedrop/shared";
 import { morgan } from "@dinedrop/shared";
 import routes from "./routes/v1";
-import consumeKafkaMessages from "./kafka/consumer";
+import runConsumer from "./modules/kafka/consumer";
 
 const app: Express = express();
 
@@ -39,13 +39,7 @@ app.use(ExpressMongoSanitize());
 // gzip compression
 app.use(compression());
 
-consumeKafkaMessages()
-  .then(() => {
-    console.log("Listening for kafka messages...");
-  })
-  .catch((e) => {
-    console.log(e);
-  });
+runConsumer();
 
 // v1 api routes
 app.use("/", routes);

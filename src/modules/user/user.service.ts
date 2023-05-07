@@ -19,10 +19,10 @@ import User from "./user.model";
 export const createUser = async (
   userBody: NewCreatedUser
 ): Promise<IUserDoc> => {
-  if (await User.isEmailTaken(userBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
-  }
-  return User.create(userBody);
+  return User.create({
+    name: userBody.name,
+    
+  });
 };
 
 /**
