@@ -11,9 +11,13 @@ const consumer = new KafkaConsumer(consumerConfig);
 consumer.on("user-registered", async (result) => {
   const value = result.value?.toString();
   if (value === undefined || value == "{}") return;
-  const user = JSON.parse(value);
-  const newUser = await userService.createUser(user);
-  console.log("new user created: ", newUser);
+  try {
+    const user = JSON.parse(value);
+    const newUser = await userService.createUser(user);
+    console.log("new user created: ", newUser);
+  } catch (error) {
+    console.error("Error processing message:", error);
+  }
 });
 
 async function runConsumer() {

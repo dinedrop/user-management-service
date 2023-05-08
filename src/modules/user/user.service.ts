@@ -19,10 +19,7 @@ import User from "./user.model";
 export const createUser = async (
   userBody: NewCreatedUser
 ): Promise<IUserDoc> => {
-  return User.create({
-    name: userBody.name,
-    
-  });
+  return User.create(userBody);
 };
 
 /**
